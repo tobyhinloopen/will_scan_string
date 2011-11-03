@@ -9,10 +9,8 @@ describe WillScanString::StringScanner do
 
 	it "should pass on named capture groups in a regexp" do
 		ss = WillScanString::StringScanner.new
-		ss.register_replacement %r{<(?<tagname>[a-z]+)>.*?</\k<tagname>>}, ->(m){
-			m.should eql 0 => "<strong>hi!</strong>", :tagname => "strong"
-		}
-		ss.replace "<strong>hi!</strong>"
+		ss.register_replacement %r{<([a-z]+)>.*?</\1>}, ->(_, tagname){ "#{tagname}" }
+		ss.replace("<strong>hi!</strong>").should eql("strong")
 	end
 
 	it "should not replace replaced strings" do
@@ -23,5 +21,13 @@ describe WillScanString::StringScanner do
 		ss.register_replacement "\"", "&quot;"
 		ss.register_replacement "&", "&amp;"
 		ss.replace("& :)").should eql %{&amp; <img src="happy.png" alt=":)" title=":)">}
+	end
+
+	it "should be able to use multiple regular expressions to replace with" do
+		ss = WillScanString::StringScanner.new
+		{ /(a)(b)/ => "AB",
+		  /(c)(d)/ => "CD"
+		}.each{ |k, v| ss.register_replacement k, v }
+		ss.replace("abcd").should eql "ABCD"
 	end
 end
