@@ -2,7 +2,7 @@ module WillScanString
 	class StringScanner
 		def register_replacement( pattern, replacement )
 			@replacements = [] if @replacements.nil?
-			@replacements << [ pattern, replacement, @replacements.last.present? ? @replacements.last[2] + (@replacements.last[0].is_a?(Regexp) ? @replacements.last[0].capture_groups.length : 1) : 0 ]
+			@replacements << [ pattern, replacement, @replacements.last.present? ? @replacements.last[2] + (@replacements.last[0].is_a?(Regexp) ? @replacements.last[0].capture_groups.length : 0) + 1 : 0 ]
 			@replacements_regexp = nil
 		end
 
@@ -15,16 +15,16 @@ module WillScanString
 
 		protected
 		def get_match_and_replacement( m )
-			m = m.to_a
-			i = m[1..-1].find_index{ |v| v.present? }
+			m = m.to_a.tap{ |m| m.shift }
+			i = m.find_index{ |v| v.present? }
 			r = find_replacement_by_index(i)
 			cps = [0] + (r[0].is_a?(Regexp) ? r[0].capture_groups : [])
-			m = Hash[ cps.zip m[i, cps.length] ]
+			m = m[i, cps.length]
 			[m, r[1]]
 		end
 
 		def execute_replacement_with_match( r, m )
-			r.is_a?(Proc) ? r.call(m) : r.to_s
+			r.is_a?(Proc) ? r.call(*m) : r.to_s
 		end
 
 		def find_replacement_by_index( i )
@@ -37,10 +37,15 @@ module WillScanString
 
 		private
 		def reconstruct_replacement_regexp
+			additional_offset = 1
 			pattern = @replacements.map(&:first).map{ |pat|
-				"(#{ pat.is_a?(Regexp) ? pat.source : Regexp.escape(pat.to_s) })"
+				cpsc = pat.is_a?(Regexp) ? pat.capture_groups.length : 0
+				pat = pat.is_a?(Regexp) ? pat.source : Regexp.escape(pat.to_s)
+				pat.gsub!(/(?<!\\\\)(?<=\\)(\d+)/){ $1.to_i + additional_offset }
+				additional_offset += 1 + cpsc
+				"(#{pat})"
 			}.join "|"
-			Regexp.new "(?:#{pattern})"
+			/(?:#{pattern})/
 		end
 	end
 end
