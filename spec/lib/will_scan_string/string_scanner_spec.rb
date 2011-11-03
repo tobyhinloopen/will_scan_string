@@ -7,7 +7,7 @@ describe WillScanString::StringScanner do
 		ss.replace(":)").should eql "HAPPY"
 	end
 
-	it "should pass on named capture groups in a regexp" do
+	it "should perform a regexp replacement with a capture group" do
 		ss = WillScanString::StringScanner.new
 		ss.register_replacement %r{<([a-z]+)>.*?</\1>}, ->(_, tagname){ "#{tagname}" }
 		ss.replace("<strong>hi!</strong>").should eql("strong")
