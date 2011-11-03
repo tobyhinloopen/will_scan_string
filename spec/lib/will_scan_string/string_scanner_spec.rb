@@ -25,9 +25,8 @@ describe WillScanString::StringScanner do
 
 	it "should be able to use multiple regular expressions to replace with" do
 		ss = WillScanString::StringScanner.new
-		{ /(a)(b)/ => "AB",
-		  /(c)(d)/ => "CD"
-		}.each{ |k, v| ss.register_replacement k, v }
+		ss.register_replacement /(a)(b)/, "AB"
+		ss.register_replacement /(c)(d)/, "CD"
 		ss.replace("abcd").should eql "ABCD"
 	end
 end
