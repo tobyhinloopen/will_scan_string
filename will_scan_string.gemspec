@@ -13,7 +13,9 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "will_scan_string"
 
+	s.add_development_dependency "activesupport", "~> 3.0.9"
 	s.add_development_dependency "rspec", "~> 2.6"
+	s.add_dependency "i18n", "~> 0.5.0"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
