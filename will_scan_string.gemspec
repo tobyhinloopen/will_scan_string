@@ -8,10 +8,12 @@ Gem::Specification.new do |s|
   s.authors     = ["Toby Hinloopen"]
   s.email       = ["toby@kutcomputers.nl"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{Gem for string replacements using multiple regular expressions in a single pass.}
+  s.description = %q{Gem for string replacements using multiple regular expressions in a single pass.}
 
   s.rubyforge_project = "will_scan_string"
+
+	s.add_development_dependency "rspec", "~> 2.6"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
