@@ -3,6 +3,11 @@ Will scan string
 Multi-pass string replacement has always been fun. I don't know any good way to
 perform multiple replacements on strings, so I made this minor gem.
 
+Usage
+-----
+Just don't use this, but if you're curious: Check `spec/lib/will_scan_string`
+for examples and features.
+
 Notes
 -----
 This gem is buggy and nowhere friendly to use. It's designed for personal use
