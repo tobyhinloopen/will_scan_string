@@ -38,4 +38,8 @@ describe WillScanString::RegexpTraits do
 		/(?:\s*(?:([a-z0-9_-]+)|^)\s*[:=]\s*)?("[^"\\]*(?:\\[\s\S][^"\\]*)*"|'[^'\\]*(?:\\[\s\S][^'\\]*)*'|[^\]\s,]+|(?<=,)(?=\s*,))\s*,?/i.capture_groups.should \
 			eql [ 1, 2 ]
 	end
+
+	it "should handle a regexp matching newlines" do
+		/(?:\r\n|\r|\n)/.capture_groups.should eql []
+	end
 end

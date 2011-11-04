@@ -29,4 +29,10 @@ describe WillScanString::StringScanner do
 		ss.register_replacement /(c)(d)/, "CD"
 		ss.replace("abcd").should eql "ABCD"
 	end
+
+	it "should match newlines" do
+		ss = WillScanString::StringScanner.new
+		ss.register_replacement /(?:\r\n)/, "<br>"
+		ss.replace("\r\n").should eql("<br>")
+	end
 end
