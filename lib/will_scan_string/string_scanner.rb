@@ -16,7 +16,7 @@ module WillScanString
 		protected
 		def get_match_and_replacement( m )
 			m = m.to_a.tap{ |m| m.shift }
-			i = m.find_index{ |v| v.present? }
+			i = m.find_index{ |v| !v.nil? }
 			r = find_replacement_by_index(i)
 			cps = [0] + (r[0].is_a?(Regexp) ? r[0].capture_groups : [])
 			m = m[i, cps.length]
