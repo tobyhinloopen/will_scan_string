@@ -35,4 +35,10 @@ describe WillScanString::StringScanner do
 		ss.register_replacement /(?:\r\n)/, "<br>"
 		ss.replace("\r\n").should eql("<br>")
 	end
+
+	it "should return match as first argument" do
+		ss = WillScanString::StringScanner.new
+		ss.register_replacement /(a)(b)/, ->(match, a, b) { a*3 + b*3 + match.class.to_s }
+		ss.replace("ab").should eql("aaabbbMatchData")
+	end
 end
