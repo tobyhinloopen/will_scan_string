@@ -19,7 +19,7 @@ module WillScanString
 			i = matchArray.find_index{ |v| !v.nil? }
 			r = find_replacement_by_index(i)
 			cps = [0] + (r[0].is_a?(Regexp) ? r[0].capture_groups : [])
-			[[m]+matchArray[i+1, cps.length], r[1]]
+			[[m]+matchArray[i+1, cps.length-1], r[1]]
 		end
 
 		def execute_replacement_with_match( r, m )
