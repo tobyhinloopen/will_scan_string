@@ -20,7 +20,7 @@ describe WillScanString::StringScanner do
 		ss.register_replacement ">", "&gt;"
 		ss.register_replacement "\"", "&quot;"
 		ss.register_replacement "&", "&amp;"
-		ss.replace("& :)").should eql %{&amp; <img src="happy.png" alt=":)" title=":)">}
+		ss.replace("& :) <").should eql %{&amp; <img src="happy.png" alt=":)" title=":)"> &lt;}
 	end
 
 	it "should be able to use multiple regular expressions to replace with" do

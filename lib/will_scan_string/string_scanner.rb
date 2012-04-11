@@ -7,10 +7,18 @@ module WillScanString
 		end
 
 		def replace( string )
-			string.gsub(replacement_regexp) do
-				m, r = *get_match_and_replacement( $~ )
-				execute_replacement_with_match r, m
+			result = string.dup
+			result_offset = 0
+			string.scan replacement_regexp do
+				match = $~
+				r = *execute_replacement_with_match(*get_match_and_replacement(match).reverse)
+				replacement = r.last
+				is_global = r.first == 1
+				return replacement if is_global
+				result[(result_offset+match.begin(0))...(result_offset+match.end(0))] = replacement
+				result_offset += replacement.length - (match.end(0)-match.begin(0))
 			end
+			result
 		end
 
 		protected
